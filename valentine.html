@@ -11,13 +11,14 @@
             justify-content: center; align-items: center; background-color: #ffe4e1;
             font-family: 'Arial', sans-serif; overflow: hidden; text-align: center;
         }
-        h1 { color: #d63384; font-size: 2.2rem; margin: 10px 0; z-index: 10; }
-        #countdown { font-size: 1rem; color: #ff4d6d; margin-bottom: 20px; font-weight: bold; z-index: 10; }
+        h1 { color: #d63384; font-size: 2rem; margin: 10px 0; z-index: 10; }
+        #countdown { font-size: 1rem; color: #ff4d6d; margin-bottom: 20px; font-weight: bold; }
         
-        /* The Sad Cat GIF */
-        #catGif { width: 180px; border-radius: 15px; margin-bottom: 20px; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        /* Sad Cat Container */
+        .gif-container { margin-bottom: 20px; height: 180px; display: flex; align-items: center; justify-content: center; }
+        #catGif { width: 180px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 
-        .buttons { display: flex; gap: 20px; z-index: 10; position: relative; height: 60px; width: 100%; justify-content: center; align-items: center; }
+        .buttons { display: flex; gap: 20px; z-index: 10; position: relative; height: 60px; width: 100%; justify-content: center; }
         button {
             padding: 12px 28px; font-size: 1.1rem; border: none; border-radius: 50px;
             cursor: pointer; transition: all 0.2s; font-weight: bold;
@@ -37,23 +38,22 @@
 </head>
 <body>
 
-    <img id="catGif" src="https://media.giphy.com" alt="Sad Cat">
+    <div class="gif-container">
+        <!-- Direct reliable link to sad cat -->
+        <img id="catGif" src="https://media4.giphy.com" alt="Sad Cat">
+    </div>
     
     <h1 id="question">Will You Be My Valentine?</h1>
     
-    <div id="countdown">Loading countdown...</div>
+    <div id="countdown"></div>
 
     <div class="buttons" id="buttonContainer">
         <button id="yesBtn" onclick="celebrate()">Yes</button>
         <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
     </div>
 
-    <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com" type="audio/mpeg">
-    </audio>
-
     <script>
-        // 1. Floating Hearts Animation
+        // Floating Hearts
         setInterval(() => {
             const heart = document.createElement('div');
             heart.classList.add('heart');
@@ -64,7 +64,7 @@
             setTimeout(() => heart.remove(), 5000);
         }, 300);
 
-        // 2. Countdown to Valentine's Day 2026
+        // Countdown to Feb 14, 2026
         function updateCountdown() {
             const target = new Date("Feb 14, 2026 00:00:00").getTime();
             const now = new Date().getTime();
@@ -78,7 +78,7 @@
         }
         setInterval(updateCountdown, 1000);
 
-        // 3. Move "No" Button
+        // Move No Button
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
             const x = Math.random() * (window.innerWidth - 100);
@@ -86,13 +86,12 @@
             noBtn.style.position = 'fixed';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
-            document.getElementById('bgMusic').play().catch(() => {});
         }
 
-        // 4. Success Action
+        // Celebrate
         function celebrate() {
             document.getElementById('question').innerText = "Yay! I knew you'd say yes! ❤️";
-            // Change sad cat to happy cat
+            // Swaps to happy cat
             document.getElementById('catGif').src = "https://media.giphy.com";
             document.getElementById('buttonContainer').style.display = 'none';
             document.getElementById('countdown').style.display = 'none';
