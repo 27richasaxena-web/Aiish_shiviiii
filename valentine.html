@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <script src="https://cdn.jsdelivr.net"></script>
+    <style>
+        body {
+            margin: 0; height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; background-color: #ffe4e1;
+            font-family: 'Arial', sans-serif; overflow: hidden; text-align: center;
+        }
+        h1 { color: #d63384; font-size: 2.2rem; margin: 10px 0; z-index: 10; }
+        #countdown { font-size: 1rem; color: #ff4d6d; margin-bottom: 20px; font-weight: bold; z-index: 10; }
+        
+        /* The Sad Cat GIF */
+        #catGif { width: 180px; border-radius: 15px; margin-bottom: 20px; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+        .buttons { display: flex; gap: 20px; z-index: 10; position: relative; height: 60px; width: 100%; justify-content: center; align-items: center; }
+        button {
+            padding: 12px 28px; font-size: 1.1rem; border: none; border-radius: 50px;
+            cursor: pointer; transition: all 0.2s; font-weight: bold;
+        }
+        #yesBtn { background-color: #ff4d6d; color: white; }
+        #noBtn { background-color: #ffffff; color: #ff4d6d; position: absolute; }
+
+        .heart {
+            position: absolute; color: rgba(255, 105, 180, 0.4); font-size: 20px;
+            pointer-events: none; animation: float 5s linear infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <img id="catGif" src="https://media.giphy.com" alt="Sad Cat">
+    
+    <h1 id="question">Will You Be My Valentine?</h1>
+    
+    <div id="countdown">Loading countdown...</div>
+
+    <div class="buttons" id="buttonContainer">
+        <button id="yesBtn" onclick="celebrate()">Yes</button>
+        <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // 1. Floating Hearts Animation
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }, 300);
+
+        // 2. Countdown to Valentine's Day 2026
+        function updateCountdown() {
+            const target = new Date("Feb 14, 2026 00:00:00").getTime();
+            const now = new Date().getTime();
+            const diff = target - now;
+            if (diff < 0) { document.getElementById('countdown').innerHTML = "Happy Valentine's Day! ❤️"; return; }
+            const d = Math.floor(diff / 86400000);
+            const h = Math.floor((diff % 86400000) / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
+            document.getElementById('countdown').innerHTML = `${d}d ${h}h ${m}m ${s}s until Valentine's`;
+        }
+        setInterval(updateCountdown, 1000);
+
+        // 3. Move "No" Button
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+            document.getElementById('bgMusic').play().catch(() => {});
+        }
+
+        // 4. Success Action
+        function celebrate() {
+            document.getElementById('question').innerText = "Yay! I knew you'd say yes! ❤️";
+            // Change sad cat to happy cat
+            document.getElementById('catGif').src = "https://media.giphy.com";
+            document.getElementById('buttonContainer').style.display = 'none';
+            document.getElementById('countdown').style.display = 'none';
+            confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+        }
+    </script>
+</body>
+</html>
